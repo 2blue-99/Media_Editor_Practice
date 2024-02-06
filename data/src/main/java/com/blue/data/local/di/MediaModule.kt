@@ -16,7 +16,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object MediaModule {
-
     @Provides
     @Singleton
     fun provideDatabase(@ApplicationContext context: Context): AppDataBase =
@@ -29,6 +28,4 @@ object MediaModule {
     @Provides
     @Singleton
     fun provideMediaRepo(dao: MediaDao): MediaRepo = MediaRepoImpl(dao)
-
-
 }

@@ -14,7 +14,7 @@ interface MediaDao {
     fun realAll(): Flow<List<MediaEntity>>
 
     @Query("Delete From Media Where id = :id")
-    suspend fun delete(id: Int)
+    suspend fun delete(id: Int): Int
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(data: MediaEntity)

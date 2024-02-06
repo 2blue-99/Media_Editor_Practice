@@ -1,5 +1,7 @@
 package com.blue.mediaeditor.ui.screen
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Create
 import androidx.compose.material.icons.filled.ExitToApp
@@ -46,10 +49,11 @@ fun MainScreen(
     val bottomSheetUiState by mainViewModel.bottomSheetUiState.collectAsStateWithLifecycle()
 
     Scaffold(
+        containerColor = Color.DarkGray,
         modifier = Modifier.fillMaxSize(),
         floatingActionButton = {
             IconButton(onClick = { /*TODO*/ }) {
-
+                Icon(imageVector = Icons.Default.Add, contentDescription = "")
             }
         }
     ) { padding ->
@@ -96,18 +100,21 @@ fun MainContent(
     if (bottomSheetUiState is BottomSheetUiState.Up) {
         MainBottomSheet(sheetState = bottomSheetState, mainViewModel)
     }
-
     LazyColumn(
-        modifier = Modifier
+        modifier = Modifier.fillMaxSize(),
     ) {
         item {
-            Surface(color = Color.Black) {
-                Text(text = "Media Editor")
+            Column(
+                modifier = Modifier.fillMaxWidth().height(250.dp).background(Color.Black),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(text = "Media Editor", color = Color.White)
             }
         }
 
-        items(uiData.mediaList, key = {it.id}) {
-             ProjectComponent(uiData = it)
+        items(uiData.mediaList, key = { it.id }) {
+            ProjectComponent(uiData = it)
         }
     }
 }
@@ -120,7 +127,7 @@ fun MainBottomSheet(
 ) {
     ModalBottomSheet(
         onDismissRequest = { mainViewModel.changeBottomSheet(false) },
-        sheetState =  sheetState
+        sheetState = sheetState
     ) {
         Surface(
             modifier = Modifier
