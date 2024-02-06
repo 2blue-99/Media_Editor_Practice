@@ -1,5 +1,9 @@
 package com.blue.mediaeditor.ui.screen
 
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Clear
@@ -17,8 +22,11 @@ import androidx.compose.material.icons.filled.Create
 import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonColors
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SheetState
@@ -30,15 +38,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.semantics.Role.Companion.Button
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import androidx.navigation.navArgument
+import com.blue.mediaeditor.navigation.Destination
 import com.blue.mediaeditor.ui.component.ProjectComponent
 import com.blue.mediaeditor.ui.state.BottomSheetUiState
 import com.blue.mediaeditor.ui.state.MainUiState
 import com.blue.mediaeditor.viewModel.MainViewModel
+import com.google.android.exoplayer2.MediaItem
 
 @Composable
 fun MainScreen(
@@ -48,11 +58,23 @@ fun MainScreen(
     val mainUiState by mainViewModel.mainUiState.collectAsStateWithLifecycle()
     val bottomSheetUiState by mainViewModel.bottomSheetUiState.collectAsStateWithLifecycle()
 
+    val launcher =  rememberLauncherForActivityResult(contract =
+    ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
+        if(uri!=null) {
+            navController.currentBackStackEntry?.savedStateHandle?.set(key = "uri", value = uri.toString())
+            navController.navigate(Destination.Setting.name)
+        }
+    }
+
     Scaffold(
         containerColor = Color.DarkGray,
         modifier = Modifier.fillMaxSize(),
         floatingActionButton = {
-            IconButton(onClick = { /*TODO*/ }) {
+            FloatingActionButton(
+                onClick = { launcher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageAndVideo)) },
+                containerColor = Color.Red,
+                shape = CircleShape
+            ) {
                 Icon(imageVector = Icons.Default.Add, contentDescription = "")
             }
         }
