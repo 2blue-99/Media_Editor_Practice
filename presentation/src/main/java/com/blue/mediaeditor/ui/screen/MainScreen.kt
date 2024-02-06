@@ -38,6 +38,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -47,22 +48,30 @@ import com.blue.mediaeditor.navigation.Destination
 import com.blue.mediaeditor.ui.component.ProjectComponent
 import com.blue.mediaeditor.ui.state.BottomSheetUiState
 import com.blue.mediaeditor.ui.state.MainUiState
+import com.blue.mediaeditor.util.ExoPlayerManager
 import com.blue.mediaeditor.viewModel.MainViewModel
 import com.google.android.exoplayer2.MediaItem
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
 
 @Composable
 fun MainScreen(
     navController: NavController,
     mainViewModel: MainViewModel = hiltViewModel()
 ) {
+    val context = LocalContext.current
     val mainUiState by mainViewModel.mainUiState.collectAsStateWithLifecycle()
     val bottomSheetUiState by mainViewModel.bottomSheetUiState.collectAsStateWithLifecycle()
+    val initState by ExoPlayerManager.initState.collectAsStateWithLifecycle()
+
+    if(initState)
+        navController.navigate(Destination.Project.name)
 
     val launcher =  rememberLauncherForActivityResult(contract =
     ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
         if(uri!=null) {
-            navController.currentBackStackEntry?.savedStateHandle?.set(key = "uri", value = uri.toString())
-            navController.navigate(Destination.Setting.name)
+            ExoPlayerManager.init(context, uri)
+//            navController.currentBackStackEntry?.savedStateHandle?.set(key = "uri", value = uri.toString())
         }
     }
 
@@ -75,7 +84,7 @@ fun MainScreen(
                 containerColor = Color.Red,
                 shape = CircleShape
             ) {
-                Icon(imageVector = Icons.Default.Add, contentDescription = "")
+                Icon(imageVector = Icons.Default.Add, tint = Color.White, contentDescription = "")
             }
         }
     ) { padding ->
@@ -127,7 +136,10 @@ fun MainContent(
     ) {
         item {
             Column(
-                modifier = Modifier.fillMaxWidth().height(250.dp).background(Color.Black),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(250.dp)
+                    .background(Color.Black),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {

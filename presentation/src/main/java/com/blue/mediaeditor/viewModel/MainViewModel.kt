@@ -40,6 +40,5 @@ class MainViewModel @Inject constructor(
         }else{
             _bottomSheetUiState.value = BottomSheetUiState.Down
         }
-
     }
 }

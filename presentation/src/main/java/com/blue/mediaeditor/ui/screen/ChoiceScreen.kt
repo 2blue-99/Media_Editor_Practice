@@ -33,34 +33,11 @@ import com.google.android.exoplayer2.ui.PlayerView
 fun ChoiceScreen(
     navController: NavController
 ) {
-    val context = LocalContext.current
-    val exoPlayer = remember{
-        SimpleExoPlayer.Builder(context).build().apply {
-            setMediaItem(MediaItem.fromUri(""))
-            prepare()
-        }
-    }
-
-    val launcher =  rememberLauncherForActivityResult(contract =
-    ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
-        if(uri!=null)
-            exoPlayer.setMediaItem(MediaItem.fromUri(uri))
-    }
 
     Column(
         modifier = Modifier.padding()
     ) {
-        AndroidView(
-            factory = {context ->
-                PlayerView(context).apply {
-                    player = exoPlayer
-                }
-            },
-            modifier = Modifier.fillMaxWidth().height(400.dp)
-        )
-        Button(onClick = { launcher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageAndVideo)) }) {
-            Text(text = "갤러리 접근")
-        }
+
     }
 
 }

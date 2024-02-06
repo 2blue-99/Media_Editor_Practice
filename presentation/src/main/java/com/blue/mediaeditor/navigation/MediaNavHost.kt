@@ -13,6 +13,7 @@ import com.blue.mediaeditor.ui.screen.ChoiceScreen
 import com.blue.mediaeditor.ui.screen.MainScreen
 import com.blue.mediaeditor.ui.screen.ProjectScreen
 import com.blue.mediaeditor.ui.screen.SettingScreen
+import com.blue.mediaeditor.util.ExoPlayerManager
 
 @Composable
 fun MediaNavHost(
@@ -32,12 +33,14 @@ fun MediaNavHost(
             ChoiceScreen(navController)
         }
         composable(Destination.Setting.name) {
-            val uri = remember { navController.previousBackStackEntry?.savedStateHandle?.get<String>("uri") }
+            val uri =
+                remember { navController.previousBackStackEntry?.savedStateHandle?.get<String>("uri") }
             if (uri != null) {
                 SettingScreen(navController, uri.toUri())
             }
         }
         composable(Destination.Project.name) {
+//            val uri = remember { navController.previousBackStackEntry?.savedStateHandle?.get<String>("uri") }
             ProjectScreen(navController)
         }
     }
