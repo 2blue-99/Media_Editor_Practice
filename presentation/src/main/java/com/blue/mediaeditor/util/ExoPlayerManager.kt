@@ -28,7 +28,15 @@ object ExoPlayerManager {
         })
     }
 
-    fun getMediaLength(): Float {
-        return exoPlayer.duration.toFloat()
+    fun getMediaLength(): Float =
+        exoPlayer.duration.toFloat()
+
+
+    fun play(){
+        exoPlayer.play()
+    }
+
+    fun pause(){
+        exoPlayer.pause()
     }
 }
