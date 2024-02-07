@@ -32,11 +32,11 @@ object ExoPlayerManager {
         exoPlayer.duration.toFloat()
 
 
-    fun play(){
+    fun play() {
         exoPlayer.play()
     }
 
-    fun pause(){
+    fun pause() {
         exoPlayer.pause()
     }
 }

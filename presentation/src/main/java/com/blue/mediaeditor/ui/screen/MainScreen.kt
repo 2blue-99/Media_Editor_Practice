@@ -69,10 +69,8 @@ fun MainScreen(
 
     val launcher =  rememberLauncherForActivityResult(contract =
     ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
-        if(uri!=null) {
+        if(uri!=null)
             ExoPlayerManager.init(context, uri)
-//            navController.currentBackStackEntry?.savedStateHandle?.set(key = "uri", value = uri.toString())
-        }
     }
 
     Scaffold(

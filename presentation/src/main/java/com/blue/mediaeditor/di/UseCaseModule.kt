@@ -12,19 +12,19 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object Module {
+object UseCaseModule {
     @Provides
     @Singleton
-    fun provideUseCase1(repo: MediaRepo) =
+    fun provideDeleteUseCase(repo: MediaRepo) =
         DeleteUseCase(repo)
 
     @Provides
     @Singleton
-    fun provideUseCase2(repo: MediaRepo) =
+    fun provideInsertUseCase(repo: MediaRepo) =
         InsertUseCase(repo)
 
     @Provides
     @Singleton
-    fun provideUseCase3(repo: MediaRepo) =
+    fun provideReadUseCase(repo: MediaRepo) =
         ReadAllUseCase(repo)
 }

@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.blue.domain.usecase.media.ReadAllUseCase
 import com.blue.mediaeditor.ui.state.BottomSheetUiState
 import com.blue.mediaeditor.ui.state.MainUiState
+import com.google.android.exoplayer2.SimpleExoPlayer
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -16,7 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val readAllUseCase: ReadAllUseCase
+    private val readAllUseCase: ReadAllUseCase,
 ) : ViewModel() {
     private val _bottomSheetUiState = MutableStateFlow<BottomSheetUiState>(BottomSheetUiState.Down)
     val bottomSheetUiState: StateFlow<BottomSheetUiState> get() = _bottomSheetUiState
